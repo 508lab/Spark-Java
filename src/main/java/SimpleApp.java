@@ -1,23 +1,33 @@
 /* SimpleApp.java */
-import org.apache.spark.api.java.*;
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.function.Function;
+
+// $example on:schema_merging$
+
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoders;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * https://spark.apache.org/docs/latest/sql-getting-started.html
+ */
 
 public class SimpleApp {
+
     public static void main(String[] args) {
-        String logFile = "/home/zhailin/rj/spark-2.4.0-bin-hadoop2.7/README.md"; // Should be some file on your system
-        SparkConf conf = new SparkConf().setAppName("Simple Application");
-        JavaSparkContext sc = new JavaSparkContext(conf);
-        JavaRDD<String> logData = sc.textFile(logFile).cache();
-
-        long numAs = logData.filter(new Function<String, Boolean>() {
-            public Boolean call(String s) { return s.contains("a"); }
-        }).count();
-
-        long numBs = logData.filter(new Function<String, Boolean>() {
-            public Boolean call(String s) { return s.contains("b"); }
-        }).count();
-
-        System.out.println("Lines with a: " + numAs + ", lines with b: " + numBs);
+        SparkSession spark = SparkSession
+                .builder()
+                .master("local[2]")
+                .getOrCreate();
+        List<String> jsonData = Arrays.asList(
+                "{\"name\":\"Yin\",\"address\":{\"city\":\"Columbus\",\"state\":\"Ohio\"}}");
+        Dataset<String> anotherPeopleDataset = spark.createDataset(jsonData, Encoders.STRING());
+        Dataset<Row> anotherPeople = spark.read().json(anotherPeopleDataset);
+        anotherPeople.show();
+        String filePath = System.getProperty("user.dir") + "/resources/people.json";
+        Dataset<Row> fileDataset = spark.read().json(filePath);
+        fileDataset.printSchema();
     }
 }

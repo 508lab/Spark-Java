@@ -20,7 +20,7 @@
 
 
 - ## 运行官方示例
-```
+``` 
     1. 示例代码为 src/main/java/SimpleApp.java
     
     2. 之后使用idea将项目打包为jar文件
@@ -29,7 +29,7 @@
 
     4. zip -d spark.jar META-INF/*.RSA META-INF/*.DSA META-INF/*.SF  (默认idea打包好像会将MEIA-INF目录打包进去)
 
-    5. YOUR_SPARK_HOME/bin/spark-submit --class "SimpleApp" --master local[4] spark.jar
+    5. YOUR_SPARK_HOME/bin/spark-submit --class "SimpleApp" --master **local**[4] spark.jar
 
     6. 看到输出 Lines with a: ... 的字样即成功
 ```
