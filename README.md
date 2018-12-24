@@ -2,6 +2,7 @@
 
 - ## 开发环境
     - ### 主机: ubuntu16.04
+    - ### jdk: java8
     - ### 开发工具: idea-2018.2.4
     - ### Spark: spark2.4
 
@@ -17,11 +18,9 @@
     4.打开：http://localhost:8080/   看到关于Spark Master的字样即表示成功。
 ```
 
-
-
 - ## 运行官方示例
 ``` 
-    1. 示例代码为 src/main/java/SimpleApp.java
+    1. 下载示例代码: https://github.com/schizobulia/Spark-Java/tree/69babb84a5d88b5a986d2d368a54645aa8ef03ef
     
     2. 之后使用idea将项目打包为jar文件
 
@@ -33,6 +32,13 @@
 
     6. 看到输出 Lines with a: ... 的字样即成功
 ```
+
+### 目录
+ 1. [Spark-sql](https://github.com/schizobulia/Spark-Java/tree/c40a605f9aff1e0daf501506b0ee07890cb32c74)
+
+
+### 说明
+    1. 每个commit都是可以运行的Demo.(请注意commit说明)
 
 #### 持续更新...
     
