@@ -20,9 +20,9 @@
 
 - ## 运行官方示例
 ``` 
-    1. 下载示例代码: https://github.com/schizobulia/Spark-Java/tree/69babb84a5d88b5a986d2d368a54645aa8ef03ef
+    1. 下载示例代码: https://github.com/schizobulia/Spark-Java
     
-    2. 之后使用idea将项目打包为jar文件
+    2. git reset 69babb84a5d88b5a986d2d368a54645aa8ef03ef    之后使用idea将项目打包为jar文件
 
     3. 验证jar文件中是否包含： jar tf spark.jar | grep Simple.class  (如果没有请查看打包过程是否正确)
 

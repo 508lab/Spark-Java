@@ -1,28 +1,31 @@
 /* SimpleApp.java */
-
-// $example on:schema_merging$
-
-import com.task.TaskThread;
-import com.until.FileTool;
+import org.apache.spark.SparkConf;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SparkSession;
-import java.util.List;
+import org.elasticsearch.spark.sql.api.java.JavaEsSparkSQL;
 
 /**
- * 官方文档: https://spark.apache.org/docs/latest/sql-getting-started.html
+ * Spark官方文档: https://spark.apache.org/docs/latest/sql-getting-started.html
+ * ElasticSearch官方文档: https://www.elastic.co/guide/en/elasticsearch/hadoop/current/spark.html
  */
 
 public class SimpleApp {
     public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .master("local[2]")
-                .appName("Java Spark SQL basic example")
-                .getOrCreate();
-        String fileRootPath = System.getProperty("user.dir") + "/resources/";
-        List<String> files = FileTool.getFileByPath(fileRootPath);
-        for (int i = 0; i < files.size(); i++) {
-            new TaskThread(spark, fileRootPath + files.get(i)).start();
-        }
 
+        /**
+         * sql from ElasticSearch
+         * ElasticSearch客户端是白金会员好像才可以连接...
+         */
+        SparkConf sparkConf = new SparkConf()
+                .setAppName("writeEs").setMaster("local[*]")
+                .set("es.index.auto.create", "true")
+                .set("es.nodes", "url")
+                .set("es.port", "prot").set("es.nodes.wan.only", "true");
+        SparkSession sparkSession = SparkSession.builder().config(sparkConf).getOrCreate();
+        SQLContext sql = new SQLContext(sparkSession);
+        Dataset<Row> info = JavaEsSparkSQL.esDF(sql, "users");
+        info.show();
     }
 }
