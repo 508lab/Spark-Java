@@ -7,45 +7,15 @@
     <groupId>demo</groupId>
     <artifactId>spark</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <properties>
-        <scala.version>2.11.12</scala.version>
-        <spark.scala.version>2.11</spark.scala.version>
-        <spark.version>2.4.0</spark.version>
-        <elasticsearch.version>6.4.2</elasticsearch.version>
-    </properties>
 
 
     <dependencies>
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_${spark.scala.version}</artifactId>
-            <version>${spark.version}</version>
+            <artifactId>spark-streaming_2.11</artifactId>
+            <version>2.4.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${spark.scala.version}</artifactId>
-            <version>${spark.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>transport</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch-spark-20_${spark.scala.version}</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
+
     </dependencies>
 
     <build>

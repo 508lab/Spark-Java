@@ -35,6 +35,7 @@
 
 ### 目录
  1. [Spark-sql](https://github.com/schizobulia/Spark-Java/tree/c40a605f9aff1e0daf501506b0ee07890cb32c74)
+ 1. [Spark-ElasticSearch](https://github.com/schizobulia/Spark-Java/tree/77ba7c9f6e7d6e2a6b807227858f6f6fc753b124)
 
 
 ### 说明

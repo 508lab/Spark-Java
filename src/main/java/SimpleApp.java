@@ -1,31 +1,33 @@
 /* SimpleApp.java */
-import org.apache.spark.SparkConf;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SQLContext;
-import org.apache.spark.sql.SparkSession;
-import org.elasticsearch.spark.sql.api.java.JavaEsSparkSQL;
+
+
+
+import org.apache.spark.*;
+import org.apache.spark.api.java.StorageLevels;
+import org.apache.spark.streaming.*;
+import org.apache.spark.streaming.api.java.*;
+import scala.Tuple2;
+
+import java.util.Arrays;
 
 /**
- * Spark官方文档: https://spark.apache.org/docs/latest/sql-getting-started.html
- * ElasticSearch官方文档: https://www.elastic.co/guide/en/elasticsearch/hadoop/current/spark.html
+ * Spark官方文档: https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html
  */
 
 public class SimpleApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        /**
-         * sql from ElasticSearch
-         * ElasticSearch客户端是白金会员好像才可以连接...
-         */
-        SparkConf sparkConf = new SparkConf()
-                .setAppName("writeEs").setMaster("local[*]")
-                .set("es.index.auto.create", "true")
-                .set("es.nodes", "url")
-                .set("es.port", "prot").set("es.nodes.wan.only", "true");
-        SparkSession sparkSession = SparkSession.builder().config(sparkConf).getOrCreate();
-        SQLContext sql = new SQLContext(sparkSession);
-        Dataset<Row> info = JavaEsSparkSQL.esDF(sql, "users");
-        info.show();
+        SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount");
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(1));
+        JavaReceiverInputDStream<String> lines = jssc.socketTextStream(
+                "localhost",  9999, StorageLevels.MEMORY_AND_DISK_SER);
+        JavaDStream<String> words = lines.flatMap(x -> Arrays.asList(x.split(" ")).iterator());
+        JavaPairDStream<String, Integer> wordCounts = words.mapToPair(s -> new Tuple2<>(s, 1))
+                .reduceByKey((i1, i2) -> i1 + i2);
+
+        wordCounts.print();
+        jssc.start();
+        jssc.awaitTermination();
+
     }
 }
